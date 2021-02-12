@@ -1,0 +1,10 @@
+package ex;
+
+public class exxxx {
+	public static void main(String[] args) {
+		int[] a = {1,2,3,4,5};
+		a.clone();
+		
+		
+	}
+}
