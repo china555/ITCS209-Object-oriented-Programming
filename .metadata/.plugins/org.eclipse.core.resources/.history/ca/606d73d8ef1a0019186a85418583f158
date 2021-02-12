@@ -1,0 +1,23 @@
+package nongnam;
+
+public class three 
+{
+	public static int absolute(int x)
+	{
+		int value;
+		if (x<0)
+		{
+			return x*(-1);
+		}
+		else
+		{
+			return x;
+		}
+	}
+	public static void main(String[] args);
+	{
+		
+		System.out.println(absolute(-5));
+	}
+
+}

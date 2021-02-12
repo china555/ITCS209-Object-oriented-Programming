@@ -1,0 +1,4 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<session version="1.0">
+<refactoring comment="Convert local variable &apos;Print.main().x&apos; in &apos;Print.main()&apos; to field&#x0D;&#x0A;- Original project: &apos;week9&apos;&#x0D;&#x0A;- Original element: &apos;Print.main().x&apos;&#x0D;&#x0A;- Field name: &apos;x&apos;&#x0D;&#x0A;- Initialize field in method&#x0D;&#x0A;- Declared visibility: &apos;private&apos;&#x0D;&#x0A;- Declare field &apos;static&apos;" description="Convert local variable &apos;x&apos; to field" final="false" flags="2" id="org.eclipse.jdt.ui.promote.temp" initialize="1" input="/src&lt;{Print.java" name="x" selection="423 8" stamp="1552901939606" static="true" version="1.0" visibility="2"/>
+</session>

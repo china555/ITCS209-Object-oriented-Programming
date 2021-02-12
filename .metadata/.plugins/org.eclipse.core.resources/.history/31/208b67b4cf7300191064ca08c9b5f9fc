@@ -1,0 +1,41 @@
+import java.io.File;
+import java.io.FileNotFoundException;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Scanner;
+
+public class sort 
+{
+	public static void main(String[] args)
+	{
+		String file_name = "unsorted.txt";
+		readText(file_name);
+	}
+	
+	public static List<String> readText(String file_name)
+	{
+		File file = new File(file_name);
+		Scanner reader = null;
+		reader = new Scanner(file_name);
+		
+		String token = null;
+		
+		while(reader.hasNext())
+		{
+			token = reader.next();
+			System.out.println(token);
+			
+		}
+		return null;
+	}
+	
+	public static void printText()
+	{
+		
+	}
+	
+	public static void sortText()
+	{
+		
+	}
+}

@@ -1,0 +1,66 @@
+
+public class AirQualityProfile {
+	private String datetime;
+	private String location;
+	private int aqi;
+	private int pm25;
+	private int temp;
+	private String weather;
+	public AirQualityProfile(String datetime,String location,int aqi,int pm25,int temp,String weather) {
+		this.setDatetime(datetime);
+		this.setlocation(location);
+		this.setAqi(aqi);
+		this.setPm25(pm25);
+		this.setTemp(temp);
+		this.setWeather(weather);
+	}
+	public String getDatetime() {
+		return datetime;
+	}
+	public void setDatetime(String datetime) {
+		this.datetime = datetime;// = "2019-01-18 18:00";
+	}
+	public String getlocation() {
+		return location;
+	}
+	public void setlocation(String location) {
+		this.location = location; //="ThonBuri";
+	}
+	public int getAqi() {
+		return aqi;
+	}
+	public void setAqi(int aqi) {
+		this.aqi = aqi;//=112;
+	}
+	public int getPm25() {
+		return pm25;
+	}
+	public void setPm25(int pm25) {
+		this.pm25 = pm25;//=40;
+	}
+	public int getTemp() {
+		return temp;
+	}
+	public void setTemp(int temp) {
+		this.temp = temp;//=29;
+	}
+	public String getWeather() {
+		return weather;
+	}
+	public void setWeather(String weather) {
+		this.weather = weather;//="Few clouds";
+	}
+	public static void  main(String[] args) {
+		int count=0;
+		AirQualityProfile data1 = new AirQualityProfile("2019-01-18 18:00","Thon Buri",112,40,29,"Few clouds");
+		AirQualityProfile data2 = new AirQualityProfile("2019-01-18 18:00","Thon Buri",112,40,29,"Few clouds");
+		printAirQualityInfo(data1,count);
+		printAirQualityInfo(data2,count);
+	}
+	public static void printAirQualityInfo(AirQualityProfile data,int count) {
+		count++;
+		System.out.println(data.location+" at "+data.datetime+"\n"+"AQI: "+data.aqi+", PM2.5:"+data.pm25+"microgram/m3\n"+data.temp+"celsius "+"("+data.weather+")"+"\n\n"+count);
+	}
+	
+
+}

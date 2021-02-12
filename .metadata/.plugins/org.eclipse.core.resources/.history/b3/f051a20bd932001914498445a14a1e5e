@@ -1,0 +1,9 @@
+
+public class ProMember extends Member {
+
+	ProMember(String email, String password) {
+		super(email, password);
+		// TODO Auto-generated constructor stub
+	}
+
+}

@@ -1,0 +1,143 @@
+// Name:Kittikorn	
+// Student ID:6188086
+// Section: 1
+
+import java.io.BufferedReader;
+import java.io.FileNotFoundException;
+import java.io.FileReader;
+import java.io.IOException;
+import java.security.acl.Group;
+import java.util.ArrayList;
+import java.util.Collections;
+import java.util.Comparator;
+import java.util.HashMap;
+import java.util.LinkedHashMap;
+import java.util.LinkedList;
+import java.util.List;
+import java.util.Map;
+import java.util.Set;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
+
+
+public class SimpleMovieSearchEngine implements BaseMovieSearchEngine {
+	public Map<Integer, Movie> movies;
+	
+	@Override
+	public Map<Integer, Movie> loadMovies(String movieFilename) {
+		
+		// YOUR CODE GOES HERE
+		String pattern = "^([0-9]+)\\s([\\w ]+) \\(([0-9]+)\\)\\s([A-Z][a-z|].+)";
+		try {
+			BufferedReader read = new BufferedReader(new FileReader(movieFilename));
+			String line = read.readLine();
+			Pattern pat = Pattern.compile(pattern);
+			while(line != null) {
+				Matcher match = pat.matcher(line);
+				if(match.find()) {
+					Movie movie = new Movie(Integer.parseInt(match.group(1)), match.group(2),Integer.parseInt(match.group(3)));
+					this.movies.put(Integer.parseInt(match.group(1)),movie);
+				}
+			}
+		} catch (FileNotFoundException e) {
+			e.printStackTrace();
+		}
+		  catch (IOException e) {
+
+			e.printStackTrace();
+		}
+		return movies;
+	}
+
+	@Override
+	public void loadRating(String ratingFilename) {
+
+		// YOUR CODE GOES HERE
+		String pattern = "^([0-9]+),([0-9]+),([0-9.]+),([0-9]+)";
+		try {
+			BufferedReader read = new BufferedReader(new FileReader(ratingFilename));
+			String line = read.readLine();
+			Pattern pat = Pattern.compile(pattern);
+			while(line != null) {
+				Matcher match = pat.matcher(line);
+				if(match.find()) {
+					User id = new User(Integer.parseInt(match.group(1)));
+					movies.get(Integer.parseInt(match.group(2))).addRating(id,movies.get(Integer.parseInt(match.group(2))),Double.parseDouble(match.group(3)),Long.parseLong(match.group(4)));
+				}
+			}
+		} catch (FileNotFoundException e) {
+			e.printStackTrace();
+		}
+		  catch (IOException e) {
+
+			e.printStackTrace();
+		}
+	}
+
+	@Override
+	public void loadData(String movieFilename, String ratingFilename) {
+	
+		// YOUR CODE GOES HERE
+		loadMovies(movieFilename);
+		loadRating(ratingFilename);
+	}
+
+	@Override
+	public Map<Integer, Movie> getAllMovies() {
+
+		// YOUR CODE GOES HERE
+		if(movies.size() == 0) {
+			return null;
+		}
+		return movies;
+	}
+
+	@Override
+	public List<Movie> searchByTitle(String title, boolean exactMatch) {
+
+		// YOUR CODE GOES HERE
+		
+		return null;
+	}
+
+	@Override
+	public List<Movie> searchByTag(String tag) {
+
+		// YOUR CODE GOES HERE
+		
+		return null;
+	}
+
+	@Override
+	public List<Movie>searchByYear(int year) {
+
+		// YOUR CODE GOES HERE
+		
+		return null;
+	}
+
+	@Override
+	public List<Movie> advanceSearch(String title, String tag, int year) {
+
+		// YOUR CODE GOES HERE
+		
+		return null;
+	}
+
+	@Override
+	public List<Movie> sortByTitle(List<Movie> unsortedMovies, boolean asc) {
+
+		// YOUR CODE GOES HERE
+		
+		return null;
+	}
+
+	@Override
+	public List<Movie> sortByRating(List<Movie> unsortedMovies, boolean asc) {
+
+		// YOUR CODE GOES HERE
+		
+		return null;
+	}
+
+}

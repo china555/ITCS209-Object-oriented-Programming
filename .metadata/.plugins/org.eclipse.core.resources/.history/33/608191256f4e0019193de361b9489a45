@@ -1,0 +1,471 @@
+
+public class Player {
+
+	public enum PlayerType {Healer, Tank, Samurai, BlackMage, Phoenix, Cherry};
+	
+	private PlayerType type; 	//Type of this player. Can be one of either Healer, Tank, Samurai, BlackMage, or Phoenix
+	private double maxHP;		//Max HP of this player
+	private double currentHP;	//Current HP of this player 
+	private double atk;			//Attack power of this player
+	private int EX;
+	private boolean isSleeping;
+	private boolean isTaunting;
+	private boolean isCursed;
+	private int ulti;
+	private String Party;
+	private String row;
+	private int pos;
+	private Player gotcurse=null;
+	
+	
+	/**
+	 * Constructor of class Player, which initializes this player's type, maxHP, atk, numSpecialTurns, 
+	 * as specified in the given table. It also reset the internal turn count of this player. 
+	 * @param _type
+	 */
+	public Player(PlayerType _type)
+	{	
+		//INSERT YOUR CODE HERE
+		this.type=_type;
+		switch(type)
+		{
+		case Healer:
+			this.maxHP=4790;
+			this.atk=238;
+			this.currentHP=4790;
+			this.EX=4;
+			break;
+		case Tank:
+			this.maxHP=5340;
+			this.atk=255;
+			this.currentHP=5340;
+			this.EX=4;
+			break;
+		case Samurai:
+			this.maxHP=4005;
+			this.atk=368;
+			this.currentHP=4005;
+			this.EX=3;
+			break;
+		case BlackMage:
+			this.maxHP=4175;
+			this.atk=303;
+			this.currentHP=4175;
+			this.EX=4;
+			break;
+		case Phoenix:
+			this.maxHP=4175;
+			this.atk=209;
+			this.currentHP=4175;
+			this.EX=8;
+			break;
+		case Cherry:
+			this.maxHP=3560;
+			this.atk=198;
+			this.currentHP=3560;
+			this.EX=4;
+			break;
+					
+		}
+	}
+	
+	/**
+	 * Returns the current HP of this player
+	 * @return
+	 */
+	public double getCurrentHP()
+	{
+		//INSERT YOUR CODE HERE
+		return currentHP;
+	}
+	
+	/**
+	 * Returns type of this player
+	 * @return
+	 */
+	public Player.PlayerType getType()
+	{
+		//INSERT YOUR CODE HERE
+		return type;
+	}
+	
+	/**
+	 * Returns max HP of this player. 
+	 * @return
+	 */
+	public double getMaxHP()
+	{
+		//INSERT YOUR CODE HERE
+		
+		return maxHP;
+	}
+	
+	/**
+	 * Returns whether this player is sleeping.
+	 * @return
+	 */
+	public boolean isSleeping()
+	{
+		//INSERT YOUR CODE HERE
+		
+		
+		return isSleeping;
+	}
+	
+	/**
+	 * Returns whether this player is being cursed.
+	 * @return
+	 */
+	public boolean isCursed()
+	{
+		//INSERT YOUR CODE HERE
+		
+		return isCursed;
+	}
+	
+	/**
+	 * Returns whether this player is alive (i.e. current HP > 0).
+	 * @return
+	 */
+	public boolean isAlive()
+	{
+		//INSERT YOUR CODE HERE
+		if(this.currentHP>0)
+		{
+			return true;
+		}
+		else
+		{
+			return false;
+		}
+		
+		
+	}
+	
+	/**
+	 * Returns whether this player is taunting the other team.
+	 * @return
+	 */
+	public boolean isTaunting()
+	{
+		//INSERT YOUR CODE HERE
+		return isTaunting;
+	}
+	
+	
+	public void attack(Player target)
+	{	
+		//INSERT YOUR CODE HERE
+		target.currentHP=target.currentHP-this.atk;
+		if(target.currentHP < 0) {
+			target.currentHP = 0;
+		}
+	}
+	
+	public void useSpecialAbility(Player[][] myTeam, Player[][] theirTeam)
+	{	
+		//INSERT YOUR CODE HERE
+		ulti=0;
+		double temp=9999;
+		Player dummytarget=null;
+		switch (type)
+		{
+		case Healer:
+			for(int i=0;i<2;i++)
+			{
+				for(int j=0;j<myTeam[i].length;j++)
+				{
+					if(myTeam[i][j].getCurrentHP() > 0 && myTeam[i][j].getCurrentHP() /(myTeam[i][j].getMaxHP())*100 < temp);
+					temp=myTeam[i][j].currentHP/(myTeam[i][j].getMaxHP())*100;
+					dummytarget=myTeam[i][j];
+					
+				}
+				
+			}
+			if(dummytarget.currentHP<dummytarget.maxHP&&dummytarget.isCursed==false)
+			{
+				System.out.println("# "+Party+"["+row+"]["+pos+"] {"+this.type.toString()+"} "+"Heals "+dummytarget.Party+"["+dummytarget.row+"]["+dummytarget.pos+"] {"+dummytarget.type.toString()+"}");
+				dummytarget.currentHP=dummytarget.currentHP+(dummytarget.maxHP*0.25);
+				if(dummytarget.currentHP>dummytarget.maxHP)
+				{
+					dummytarget.currentHP=dummytarget.maxHP;
+				}
+			}
+			else if(dummytarget.isCursed==true)
+			{
+				return;
+			}
+			break;
+		case Tank:
+			System.out.println("# "+Party+"["+row+"]["+pos+"] {"+this.type.toString()+"}"+"is Taunting");
+			isTaunting=true;
+			break;
+		case Samurai:
+			dummytarget = TargetPoint(theirTeam);
+			if(dummytarget != null)
+            {
+                attack(dummytarget); attack(dummytarget);
+                System.out.println("# "+Party+"["+row+"]["+pos+"] {"+this.type.toString()+"} "+"Double-Slashes "+dummytarget.Party+"["+dummytarget.row+"]["+dummytarget.pos+"] {"+dummytarget.type.toString()+"}");
+            }
+            break;
+		case BlackMage:
+			Player cursing = imCurse(theirTeam);
+            if(imTaunt(theirTeam) != null) 
+            {
+                cursing = imTaunt(theirTeam);
+            }
+            if (cursing != null) 
+            {
+                System.out.println("# "+Party+"["+row+"]["+pos+"] {"+this.type.toString()+"} "+"Cursing "+cursing.Party+"["+cursing.row+"]["+cursing.pos+"] {"+cursing.type.toString()+"}");
+                cursing.setCursed(true);
+                this.gotcurse = cursing;
+		    }
+            break;
+		case Phoenix:
+			Player autorevive = myTeam[0][0];
+            boolean findAutorevive = false;
+            for (int i = 0; i < 2; i++)
+            {
+                for (int j = 0; j < myTeam[0].length; j++) 
+                {
+                    if(!myTeam[i][j].isAlive() && findAutorevive == false) 
+                    {
+                        autorevive = myTeam[i][j];
+                        findAutorevive = true;
+                    }
+                }
+            }
+            System.out.println("# "+Party+"["+row+"]["+pos+"] {"+this.type.toString()+"} "+"Revives "+autorevive.Party+"["+autorevive.row+"]["+autorevive.pos+"] {"+autorevive.type.toString()+"}");
+            autorevive.currentHP = autorevive.currentHP + (autorevive.maxHP*0.3);
+            autorevive.ulti = 0;
+            autorevive.setTaunting(false);
+            autorevive.setCursed(false);
+            autorevive.setSleeping(false);
+            break;
+		case Cherry:
+			for (int i = 0; i < 2; i++) {
+                for (int j = 0; j < theirTeam[0].length; j++) 
+                {
+                    if(theirTeam[i][j].isAlive()) 
+                    {
+                        System.out.println("# "+Party+"["+row+"]["+pos+"] {"+this.type.toString()+"} "+"Feeds a Fortune Cookie to "+theirTeam[i][j].Party+"["+theirTeam[i][j].row+"]["+theirTeam[i][j].pos+"] {"+theirTeam[i][j].type.toString()+"}");
+                        theirTeam[i][j].setSleeping(true);
+                    }
+                }
+            }
+        }
+		
+       }
+		
+	/**
+	 * This method is called by Arena when it is this player's turn to take an action. 
+	 * By default, the player simply just "attack(target)". However, once this player has 
+	 * fought for "numSpecialTurns" rounds, this player must perform "useSpecialAbility(myTeam, theirTeam)"
+	 * where each player type performs his own special move. 
+	 * @param arena
+	 */
+	public void takeAction(Arena arena)
+	{	
+		//INSERT YOUR CODE HERE
+		Player target;
+		if(this.type == PlayerType.BlackMage && gotcurse != null) {
+			gotcurse.setCursed(false);
+			gotcurse = null;
+		}
+		if(this.isTaunting) {
+			this.setTaunting(false);
+		}
+		if(this.isSleeping) {
+			this.setSleeping(false);
+			return;
+		}
+       if((!this.isSleeping)&& isAlive())
+        {
+            ulti++;
+            if(Party == "A") {
+            if(ulti == this.EX)
+                        {
+                            switch(this.type)
+                            {
+                                case Healer : useSpecialAbility(arena.getTeam(Arena.Team.A),arena.getTeam(Arena.Team.B));
+                                             break;
+                                case BlackMage : useSpecialAbility(arena.getTeam(Arena.Team.A),arena.getTeam(Arena.Team.B));
+                                             break;
+                                case Cherry : useSpecialAbility(arena.getTeam(Arena.Team.A),arena.getTeam(Arena.Team.B));
+                                             break;
+                                case Samurai : useSpecialAbility(arena.getTeam(Arena.Team.A),arena.getTeam(Arena.Team.B));
+                                             break;
+                                case Tank : useSpecialAbility(arena.getTeam(Arena.Team.A),arena.getTeam(Arena.Team.B));
+                                             break;
+                                case Phoenix : useSpecialAbility(arena.getTeam(Arena.Team.A),arena.getTeam(Arena.Team.B));
+                                             break;
+                            }
+                            this.ulti = 0;
+                        }
+                else
+                {
+                    target = TargetPoint(arena.getTeam(Arena.Team.B));
+                    if(target != null)
+                    {
+                        System.out.println("# "+Party+"["+row+"]["+pos+"] {"+this.type.toString()+"} "+"Attacks "+target.Party+"["+target.row+"]["+target.pos+"] {"+target.type.toString()+"}");
+                        attack(target);
+                    }
+                }
+            }
+            else if(Party == "B") {
+               if(ulti == this.EX)
+                {
+                    switch(this.type)
+                    {
+                        case Healer : useSpecialAbility(arena.getTeam(Arena.Team.B),arena.getTeam(Arena.Team.A));
+                                     break;
+                        case BlackMage : useSpecialAbility(arena.getTeam(Arena.Team.B),arena.getTeam(Arena.Team.A));
+                                     break;
+                        case Cherry : useSpecialAbility(arena.getTeam(Arena.Team.B),arena.getTeam(Arena.Team.A));
+                                     break;
+                        case Samurai : useSpecialAbility(arena.getTeam(Arena.Team.B),arena.getTeam(Arena.Team.A));
+                                     break;
+                        case Tank : useSpecialAbility(arena.getTeam(Arena.Team.B),arena.getTeam(Arena.Team.A));
+                                     break;
+                        case Phoenix : useSpecialAbility(arena.getTeam(Arena.Team.B),arena.getTeam(Arena.Team.A));
+                                     break;
+                    }
+                    ulti = 0;
+                }
+                else
+                {
+                    target = TargetPoint(arena.getTeam(Arena.Team.A));
+                    if(target != null)
+                    {
+                        System.out.println("# "+Party+"["+row+"]["+pos+"] {"+this.type.toString()+"} "+"Attacks "+target.Party+"["+target.row+"]["+target.pos+"] {"+target.type.toString()+"}");
+                        attack(target);
+                    }
+                }
+            }
+        if(this.isSleeping)
+        {
+            setSleeping(false);
+        }
+	}
+}
+	
+	/**
+	 * This method overrides the default Object's toString() and is already implemented for you. 
+	 */
+	@Override
+	public String toString()
+	{
+		return "["+this.type.toString()+" HP:"+this.currentHP+"/"+this.maxHP+" ATK:"+this.atk+"]["
+				+((this.isCursed())?"C":"")
+				+((this.isTaunting())?"T":"")
+				+((this.isSleeping())?"S":"")
+				+"]";
+	}
+	
+	public Player TargetPoint(Player[][] TeamEnemy) 
+    {
+        Player target = null;
+
+                if(imTaunt(TeamEnemy) != null)
+                {
+                    target = imTaunt(TeamEnemy);
+                }
+                else if (!FrontisDead(TeamEnemy))
+                {
+                    for(int i = 0; i<TeamEnemy[0].length; i ++) 
+                    {
+                        if(TeamEnemy[0][i].isAlive() )
+                        {
+                            target = TeamEnemy[0][i];
+                            break;
+                        }
+                    }
+                    for(int i = 0; i<TeamEnemy[0].length; i++)
+                    {
+                        if(TeamEnemy[0][i].isAlive() && target.getCurrentHP() > TeamEnemy[0][i].getCurrentHP())
+                        {
+                            target = TeamEnemy[0][i];
+                        }
+                    }
+                }
+                else
+                {
+                    for(int i = 0; i<TeamEnemy[1].length; i ++) 
+                    {
+                        if(TeamEnemy[1][i].isAlive() )
+                        {
+                            target = TeamEnemy[1][i];
+                            break;
+                        }
+                    }
+                    for(int i = 0; i<TeamEnemy[1].length; i++)
+                    {
+                        if(TeamEnemy[1][i].isAlive() && target.getCurrentHP() > TeamEnemy[1][i].getCurrentHP())
+                        {
+                            target = TeamEnemy[1][i];
+                        }
+                    }
+                }
+                return target;
+                
+	
+    }
+	public Player imTaunt(Player[][] team) {
+        for (int i = 0; i < 2; i++) {
+            for (int j = 0; j < team[i].length; j++) {
+                if(team[i][j].isTaunting) {
+                    return team[i][j];
+                }
+            }
+        }
+        return null;
+    }
+	public Player imCurse(Player[][] theirTeam) {
+        double mininum = 9999;
+        Player target = null;
+        boolean cursena = false;
+        for (int i = 0; i < 2; i++) {
+                for (int j = 0; j < theirTeam[i].length; j++) {
+                    if(theirTeam[i][j].isAlive() && theirTeam[i][j].currentHP < mininum) {
+                        mininum = theirTeam[i][j].currentHP;
+                        target = theirTeam[i][j];
+                        cursena = true;
+                    }
+                }
+        }
+        return target;
+    }
+	
+	public static boolean FrontisDead(Player [][] Team)
+    {
+                for(int i = 0; i <Team[0].length;i++)
+                {
+                    if(Team[0][i].isAlive())
+                    {
+                        return false;
+                    }
+                }
+
+
+        return true;
+    }
+	public void setSleeping(boolean isSleeping) 
+	{
+        this.isSleeping = isSleeping;
+    }
+    public void setTaunting(boolean isTaunting) 
+    {
+        this.isTaunting = isTaunting;
+    }
+    public void setCursed(boolean isCursed)
+    {
+        this.isCursed = isCursed;
+    }
+
+	public void setPosition(int position, String row, String Party) {
+		this.pos=position;
+		this.row=Party;
+		this.Party=row;
+		
+	}
+}

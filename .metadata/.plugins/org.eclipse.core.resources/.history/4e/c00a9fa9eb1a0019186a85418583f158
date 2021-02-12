@@ -1,0 +1,9 @@
+package nongnam;
+
+public class two {
+	public static void main(String[] agrs) {
+	one x = new one();
+	System.out.println(x);
+	}
+
+}

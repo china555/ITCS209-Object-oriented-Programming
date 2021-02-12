@@ -1,0 +1,13 @@
+
+public class ProMember extends Member {
+	public double fee;
+	ProMember(String email, String password,double fee) {
+		super(email, password);
+		this.fee = fee;
+		// TODO Auto-generated constructor stub
+	}
+	@Override
+	public void printMemberInfo() {
+		System.out.println("“---- PRO MEMBER ----");
+	}
+}

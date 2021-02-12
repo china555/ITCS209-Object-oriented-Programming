@@ -1,0 +1,23 @@
+import java.util.Scanner;
+public class scanner 
+{
+	  public static void main(String[] args) 
+	  {
+	    Scanner china = new Scanner(System.in);
+
+	    System.out.println("Enter name, age and salary");
+
+	    // String input
+	    String name = china.nextLine();
+
+	    // Numerical input
+	    int age = china.nextInt();
+	    double salary = china.nextDouble();
+
+	    // Output input by user
+	    System.out.println("Name: " + name); 
+	    System.out.println("Age: " + age); 
+	    System.out.println("Salary: " + salary); 
+	  }
+	}
+}

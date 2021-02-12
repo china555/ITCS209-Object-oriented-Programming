@@ -1,0 +1,268 @@
+// Name:Nattawipa Saetae
+// Student ID:6188089
+// Section:1
+
+import java.io.BufferedReader;
+import java.io.FileNotFoundException;
+import java.io.FileReader;
+import java.io.IOException;
+import java.util.ArrayList;
+import java.util.Collections;
+import java.util.Comparator;
+import java.util.HashMap;
+import java.util.LinkedHashMap;
+import java.util.LinkedList;
+import java.util.List;
+import java.util.Map;
+import java.util.Set;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
+
+
+public class SimpleMovieSearchEngine implements BaseMovieSearchEngine {
+	public Map<Integer, Movie> movies;
+	
+	@Override
+	public Map<Integer, Movie> loadMovies(String movieFilename) {
+		
+		// YOUR CODE GOES HERE
+		movies = new HashMap<Integer, Movie>();
+		try 
+		{
+			BufferedReader read = new BufferedReader(new FileReader(movieFilename));
+			String pattern =  "([\\d]+),(.+)\\s\\(([\\d]+)\\)\\\"?,(.+)";
+			Pattern pat = Pattern.compile(pattern);
+			String line = read.readLine();
+			for(int i = 0 ;line != null; i++) 
+			{
+				line = read.readLine();
+				if(line!= null)
+				{
+					Matcher match = pat.matcher(line);
+					if(match.find()) 
+					{
+						int mid = Integer.parseInt(match.group(1));
+						String title = match.group(2);
+						int year = Integer.parseInt(match.group(3));
+						String tags = match.group(4);
+						Movie movie = new Movie(mid, title, year);
+						for(String tag : tags.split("\\|"))
+						{
+							movie.addTag(tag);
+						}
+						movies.put(mid,movie);
+					}
+				}
+			}
+		} 
+		catch (FileNotFoundException e)
+		{
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		} 
+		catch (IOException e) 
+		{
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		return movies;
+	}
+
+	@Override
+	public void loadRating(String ratingFilename) {
+
+		// YOUR CODE GOES HERE
+
+			BufferedReader read;
+			try 
+			{
+				read = new BufferedReader(new FileReader(ratingFilename));
+				String pattern =  "([\\d]+),([\\d]+),([\\d].[\\d]),(.+)";
+				Pattern pat = Pattern.compile(pattern);
+				String line = read.readLine();
+				while(line != null)
+				{
+					line = read.readLine();
+					if(line != null)
+					{
+						Matcher match = pat.matcher(line);
+						if(match.find())
+						{
+							User u = new User(Integer.parseInt(match.group(1)));
+							int mid = Integer.parseInt(match.group(2));
+							double rating = Double.parseDouble(match.group(3));
+							long timestamp = Long.parseLong(match.group(4));
+							if(movies.get(mid)!=null)
+							{
+								movies.get(mid).addRating(u,movies.get(mid), rating, timestamp);
+								movies.get(mid).calMeanRating();
+							}
+						}
+					}
+				}
+			} 
+			catch (FileNotFoundException e) 
+			{
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			} 
+			catch (IOException e) 
+			{
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
+	}
+
+	@Override
+	public void loadData(String movieFilename, String ratingFilename) {
+	
+		// YOUR CODE GOES HERE
+		loadMovies(movieFilename) ;      //set the parameter to use in another method
+		loadRating(ratingFilename);
+	}
+
+	@Override
+	public Map<Integer, Movie> getAllMovies() {
+
+		// YOUR CODE GOES HERE
+		if(movies.size()!=0)
+		{
+			return movies;    //return all movies
+		}
+		else
+		{
+			return null;     //another condition return null
+		}
+	}
+
+	@Override
+	public List<Movie> searchByTitle(String title, boolean exactMatch) {
+
+		// YOUR CODE GOES HERE
+		List<Movie> w = new ArrayList<Movie>();
+		if( exactMatch == true ) 
+		{
+			for(Integer i : movies.keySet())
+			{
+				if(movies.get(i).getTitle().toLowerCase().equals(title.toLowerCase()))
+				{
+					w.add(movies.get(i));
+				}
+			}
+		}
+		else 
+		{
+			for(Integer i : movies.keySet())
+			{
+				if(movies.get(i).getTitle().toLowerCase().contains(title.toLowerCase()))
+				{
+					w.add(movies.get(i));
+				}
+			}
+		}
+		return w;
+	}
+
+	@Override
+	public List<Movie> searchByTag(String tag) {
+
+		// YOUR CODE GOES HERE
+		List<Movie> x = new ArrayList<Movie>();
+		for(Integer i : movies.keySet())
+		{
+			if(movies.get(i).getTags().contains(tag))
+			{
+				x.add(movies.get(i));
+			}
+		}
+		return x;
+	}
+
+	@Override
+	public List<Movie>searchByYear(int year) {
+
+		// YOUR CODE GOES HEE
+		List<Movie> y = new ArrayList<Movie>();
+		for(Integer i : movies.keySet())
+		{
+			if(movies.get(i).getYear() == year)
+			{
+				y.add(movies.get(i));
+			}
+		}
+		return y;
+	}
+
+	@Override
+	public List<Movie> advanceSearch(String title, String tag, int year) {
+
+		// YOUR CODE GOES HERE
+		List<Movie> z = new ArrayList<Movie>();
+		for(Integer i : movies.keySet())
+		{
+			if(title == null)
+			{
+				if(movies.get(i).getTags().contains(tag))
+				{ 
+					if(movies.get(i).getYear() == year)
+					{
+						z.add(movies.get(i));
+					}
+				}
+			}
+			else if(tag == null)
+			{
+				if(movies.get(i).getTitle().contains(title))
+				{
+					if(movies.get(i).getYear() == year)
+					{
+						z.add(movies.get(i));
+					}
+				}
+			}
+			else if(year == -1)
+			{
+				if(movies.get(i).getTitle().contains(title))
+				{
+					if(movies.get(i).getTags().contains(tag))
+					{
+						z.add(movies.get(i));
+					}
+				}
+			}
+		}
+		return z;
+	}
+
+	@Override
+	public List<Movie> sortByTitle(List<Movie> unsortedMovies, boolean asc) {
+
+		// YOUR CODE GOES HERE
+		if(asc == true) 
+		{
+			unsortedMovies.sort(Comparator.comparing(Movie::getTitle));
+			return unsortedMovies;
+		}
+		else if(asc == false) 
+		{
+			unsortedMovies.sort(Comparator.comparing(Movie::getTitle).reversed());
+			return unsortedMovies;
+		}
+		return null;
+	}
+
+	@Override
+	public List<Movie> sortByRating(List<Movie> unsortedMovies, boolean asc) {
+
+		// YOUR CODE GOES HERE
+		if(asc== true) 
+		{
+			unsortedMovies.sort(Comparator.comparingDouble(Movie::getMeanRating));
+		}
+		else if(asc == false)
+		{
+			unsortedMovies.sort(Comparator.comparingDouble(Movie::getMeanRating).reversed());
+		}
+		return unsortedMovies;
+	}
+}

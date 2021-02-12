@@ -1,0 +1,54 @@
+import java.util.HashSet;
+import java.util.Set;
+//สู้ๆนะน้ำ<3
+//ขอบคุนน่ค่  ที่รัก -3-
+//คลาส interface คือ คลาสที่มีแต่ชื่อ method เท่านั้น เป็นคลาสที่เป็นแม่แบบเฉยๆ 
+//จะไม่มี body และ มี body ไม่ได้ จะมีแต่แม่แบบเฉยๆ  เลยอย่างเช่น 
+public interface test {
+	public int add(int a);
+	public String name(String name,int num);
+	public double sum(double money);
+}//อันนี้เขาเรียกคลาส interface ส่วนถ้าเราอยากเอาแม่แบบอันนี้ไปใช้เราต้อง เขียนว่า
+// implements เช่น
+public class final_summary implements test{
+	//มันจะขึ้นแดงตรงชื่อ class และบอกว่า ให้ add unimplemented method
+	//แต่ถ้าไม่ขึ้นแสดงว่าแอดมาแล้ว
+	@Override
+	public int add(int a) {
+		return 0;
+	}
+	//เห็นไหมว่าจะมี method ที่มีชื่อเดียวกันมาทั้งหมดเลยจาก interface ของเรา
+	//และเหมือนกันเป้ะๆ แต่ในนี้สามารถมี body ได้แล้ว
+	//อะไรที่ interface มี  มันจะต้องมีเหมือนclass interface เป้ะๆแค่นั้นเอง
+	//แต่เราสามารถเพิ่ม method อื่นๆได้อย่างเช่น
+	public String info(String info) {
+		return info;
+	}//เห็นไหมว่าได้เหมือนกัน 
+	
+	//method ไหนที่มาจาก class interface ไม่ควรไปเปลี่ยนแปลงชื่อหรือ
+	//parameter ต่างๆไม่งั้นมันจะขึ้นแดงตรงclass นี้ ละเตือนเราว่ามันไม่มี method นี้นะ 
+	//และมันจะให้ทำการ add method นั้นเข้ามา
+	@Override
+	public String name(String name, int num) {
+		return null;
+	}
+	@Override
+	public double sum(double money) {
+		return 0;
+	}
+}
+//เป็นคลาสที่สามารถสร้าง abstract method ได้
+public abstract class  test_abstact{// เป็นคลาสที่ เป็นแค่นามธรรมเฉยๆ มีแค่ชื่อคลาส
+	//ไม่สามารถสร้าง object ได้ 
+	//เป็นคลาสที่สามารถมี body ได้ปกติเหมือนคลาสทั่วๆไป เหมือน week10 เข้าใจง่ายดี
+	public abstract int mem(int a);//เป็น method ที่สร้างมาเพื่อให้คลาสอื่นที่ extend ต้องมีเหมือนเป้ะ
+}
+class Set1_Map{
+	public static void main(String[] args) {
+		Set<String> word = new HashSet<String>(); // ต้อง = new HashSet<String>();
+		//เพราะเป็นการ initial ค่าของ set 
+		//word คือตัวแปรของ set ที่สามารถเก็บข้อมูลได้แค่ Stringจะเก็บ datatype อะไรขึ้นอยู่กับข้างใน <>
+		//ซึ่งถ้า จาก ex เก็บ String จะใส่พวก int ไม่ได้หรือ datatype ที่เป็น object แล้วเพราะว่าเรากำหนด
+		//ไปแล้วว่าให้เก็บ datatype String
+	}
+}

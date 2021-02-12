@@ -1,0 +1,17 @@
+package week;
+
+import java.util.Scanner;
+
+public class LetterPrinter {
+	private static int input;
+
+	public static void main(String[] args) {
+		System.out.println("XXXXX");
+		System.out.println("x");
+		System.out.println("xxxxx");
+		Scanner x = new Scanner(System.in);
+		input = x.nextInt();
+		System.out.println(x);
+	}
+
+}

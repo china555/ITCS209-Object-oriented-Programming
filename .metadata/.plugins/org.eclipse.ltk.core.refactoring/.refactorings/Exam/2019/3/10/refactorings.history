@@ -1,0 +1,4 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<session version="1.0">
+<refactoring comment="Encapsulate field &apos;blueprint_car.engine&apos; in &apos;blueprint_car&apos;&#x0D;&#x0A;- Original project: &apos;Exam&apos;&#x0D;&#x0A;- Original element: &apos;blueprint_car.engine&apos;&#x0D;&#x0A;- Getter method name: &apos;getEngine&apos;&#x0D;&#x0A;- Setter method name: &apos;setEngine&apos;&#x0D;&#x0A;- Field visibility: &apos;public&apos;&#x0D;&#x0A;- Use getter and setter methods in declaring type" comments="false" declaring="true" description="Encapsulate field &apos;engine&apos;" flags="589830" getter="getEngine" id="org.eclipse.jdt.ui.self.encapsulate" input="/src&lt;{blueprint_car.java[blueprint_car^engine" insertion="-1" setter="setEngine" stamp="1551808667274" version="1.0" visibility="1"/>
+</session>

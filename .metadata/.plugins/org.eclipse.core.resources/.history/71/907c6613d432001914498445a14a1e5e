@@ -1,0 +1,43 @@
+
+public class FreeMember extends Member {
+	public static int FREE_PRIVATE_REPOS;
+	public static int numPrivateRepo;
+	FreeMember(String email, String password) {
+		super(email, password);
+		FREE_PRIVATE_REPOS = 3;
+		numPrivateRepo = 0;
+		// TODO Auto-generated constructor stub
+	}
+	public boolean addRepository(Repository repo) {
+			if(repo.isPrivate()) {
+				if(numPrivateRepo<=FREE_PRIVATE_REPOS) {
+					repoList.add(repo);
+					numPrivateRepo++;
+					return true;
+				}
+				else if(numPrivateRepo==FREE_PRIVATE_REPOS) {
+					System.out.println("cannot be added because the number of private repository is reaching the limit");
+					return false;
+				}		
+			}
+				repoList.add(repo);
+				return true;
+			}
+	}
+	public boolean removeRepository(Repository repo) {
+		for(int i=0;i<repoList.size();i++) {
+			if(repoList.get(i).isPrivate()) {
+				repoList.remove(repo);
+				numPrivateRepo--;
+				return true;
+			}
+		}
+		return false;
+	}
+	public void printMemberInfo() {
+		System.out.println("“---- FREE MEMBER ----\n"+"Email"+this.email+"(pwd: "+this.password);
+	}
+	public int getNumPrivateRepo() {
+		return numPrivateRepo;
+	}
+}

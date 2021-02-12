@@ -1,0 +1,6 @@
+package nongnam;
+
+public class two {
+	one x = new one(9);
+
+}

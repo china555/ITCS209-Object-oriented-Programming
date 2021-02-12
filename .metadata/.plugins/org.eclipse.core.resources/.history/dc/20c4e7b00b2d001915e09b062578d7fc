@@ -1,0 +1,232 @@
+//Name: Nattawipa
+//ID:6188089
+//Section:1
+
+
+public class Kalculator 
+{
+	//******INSERT YOUR CODE HERE***********
+	//Class attributes go here
+	public double number;
+	public double[] all;
+	public static int length=0;
+	public static double sum=0;
+	public static double avg=0;
+	public static double max=0;
+	public static double min=0;
+	//**************************************
+	/**
+	 * Constructor is the fist method to be call at instantiation of a Kalculator object.
+	 * If you need to initialize your object, do so here. 
+	 */
+	Kalculator()
+	{
+		//******INSERT YOUR CODE HERE***********
+		all = new double[100];
+		length = 0;
+		//**************************************
+	}
+	
+	/**
+	 * Add number to the list of numbers. 
+	 * @param number
+	 */
+	public void addNumber(double number)
+	{	//******INSERT YOUR CODE HERE***********
+		all[length] = number;
+			length++;
+		//**************************************
+	}
+	
+	/**
+	 * Remove the least recently added number from the list. If the list is empty, do nothing.
+	 */
+	public void deleteFirstNumber()
+	{
+		//******INSERT YOUR CODE HERE***********
+		for (int i=0;i<lenght;i++)
+		{
+			all[i]=all[i+1];
+			length--;
+		}
+		//**************************************
+	}
+	
+	public void deleteLastNumber()
+	{
+		//******INSERT YOUR CODE HERE***********
+		all[length];
+		length--;
+		//**************************************
+	}
+	
+	/**
+	 * Calculate the summation of all the numbers in the list, then returns the sum. 
+	 * If the list is empty, return 0.
+	 * @return
+	 */
+	public double getSum()
+	{
+		//******INSERT YOUR CODE HERE***********
+		int i;
+		for (i=0; i<length; i++ )
+		{
+			sum = sum + all[i]; 
+		}
+		return sum;
+		//**************************************
+	}
+	
+	/**
+	 * Calculate and return the average of all the numbers in the list.
+	 * If the list is empty, return 0.
+	 * @return
+	 */
+	public double getAvg()
+	{
+		//******INSERT YOUR CODE HERE***********
+		avg = sum/length;
+		return avg;
+		//**************************************
+	}
+	
+	/**
+	 * Calculate and return the sample standard deviation of all the numbers in the list.
+	 * If the list has fewer than 2 numbers, return 0.
+	 * @return
+	 */
+	public double getStd()
+	{
+		//******INSERT YOUR CODE HERE***********
+		double std=0;
+		for(int i =0;i<length;i++)
+		{
+			std = std + Math.pow((all[i] - avg),2);
+		}
+		return  Math.sqrt(std/(length-1));
+		//**************************************
+	}
+	
+	/**
+	 * Find and return the maximum of all the numbers in the list.
+	 * If the list is empty, return 0.
+	 * @return
+	 */
+	public double getMax()
+	{
+		//******INSERT YOUR CODE HERE***********
+		max = all[0];
+		for (int i=0; i<length; i++)
+		{
+			if(all[i] > max)
+			{
+				max = all[i];
+			}
+		}
+		return max;
+		//**************************************
+	}
+	
+	/**
+	 * Find and return the minimum of all the numbers in the list.
+	 * If the list is empty, return 0.
+	 */
+	public double getMin()
+	{
+		//******INSERT YOUR CODE HERE***********
+		min = all[0];
+		for (int i=0; i<length; i++)
+		{
+			if(min > all[i])
+			{
+				min = all[i];
+			}
+		}
+		return min;
+		//**************************************
+	}
+	
+	/**
+	 * Find and return the maximum k numbers of all the numbers in the list as an array of k double number.
+	 * The order of the returned k numbers does not matter. (We only care if you can get the max k elements)
+	 * If the list has fewer than k numbers, return null.
+	 */
+	public double[] getMaxK(int k)
+	{
+		//******INSERT YOUR CODE HERE***********
+		double[] maxk;
+		maxk = new double[k];
+		        for (int i = 0; i <length-1; i++) 
+		        {
+		            for (int j = 0; j <length-i-1; j++) 
+		                if (all[j] > all[j+1]) 
+		                { 
+		                    // swap all[j+1] and all[i] 
+		                    double temp = all[j]; 
+		                    all[j] = all[j+1]; 
+		                    all[j+1] = temp; 
+		                }
+		        }
+		        for (int i=0;i<k; i++)
+		        {
+		        	maxk[i] = all[length-i-1];
+		        }
+		        return maxk;
+		        
+	} 
+ 
+		//**************************************
+	
+	/**
+	 * Find and return the minimum k numbers of all the numbers in the list as an array of k double number.
+	 * The order of the returned k numbers does not matter. (We only care if you can get the min k elements)
+	 * If the list has fewer than k numbers, return null.
+	 */
+	public double[] getMinK(int k)
+	{
+		//******INSERT YOUR CODE HERE***********
+		double[] mink;
+		mink = new double[k];
+		        for (int i = 0; i <length-1; i++) 
+		        {
+		            for (int j = 0; j <length-i-1; j++) 
+		                if (all[j] > all[j+1]) 
+		                { 
+		                    // swap all[j+1] and all[i] 
+		                    double temp = all[j]; 
+		                    all[j] = all[j+1]; 
+		                    all[j+1] = temp; 
+		                }
+		        }
+		        for (int i=0;i<k; i++)
+		        {
+		        	mink[i] = all[i];
+		        }
+		        return mink;
+		//**************************************
+	}
+	
+	/**
+	 * Print (via System.out.println()) the numbers in the list in format of:
+	 * DATA[<N>]:[<n1>, <n2>, <n3>, ...]
+	 * Where N is the size of the list. <ni> is the ith number in the list.
+	 * E.g., "DATA[4]:[1.0, 2.0, 3.0, 4.0]"
+	 */
+	public void printData()
+	{
+		//******INSERT YOUR CODE HERE***********
+		System.out.print("DATA ["+length+"] : [");
+		for (int i=0; i<length ;i++) 
+		{
+			if (i==length-1)
+			{
+				System.out.println(all[i]+"]");
+			}
+			else
+			{
+				System.out.print(all[i]+", ");
+			}
+		}
+		//**************************************
+	}
+}

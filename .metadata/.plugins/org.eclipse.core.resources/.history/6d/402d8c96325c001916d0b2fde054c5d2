@@ -1,0 +1,188 @@
+// Name:Kittikorn	
+// Student ID:6188086
+// Section: 1
+
+import java.io.BufferedReader;
+import java.io.Closeable;
+import java.io.FileNotFoundException;
+import java.io.FileReader;
+import java.io.IOException;
+import java.security.acl.Group;
+import java.util.ArrayList;
+import java.util.Collections;
+import java.util.Comparator;
+import java.util.HashMap;
+import java.util.LinkedHashMap;
+import java.util.LinkedList;
+import java.util.List;
+import java.util.Map;
+import java.util.Set;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
+
+
+public class SimpleMovieSearchEngine implements BaseMovieSearchEngine {
+	public Map<Integer, Movie> movies ;
+	
+	@Override
+	public Map<Integer, Movie> loadMovies(String movieFilename) {
+		
+		// YOUR CODE GOES HERE
+		String pattern = "([0-9]+),(\"*[\\w]+:*'*-*[\\w ]+\\(*[A-Za-z.\\s]+[\\d]*+,*:*\\s*[A-z\\s*]+\\)*)\\s*\\(([0-9]+)\\)\\\"*,([\\D]+)";
+		movies = new HashMap<Integer, Movie>();
+		try {
+			BufferedReader read = new BufferedReader(new FileReader(movieFilename));
+			Pattern pat = Pattern.compile(pattern);
+			String line = read.readLine();
+			while(line != null) {
+				line = read.readLine();
+				if(line != null) {
+				Matcher match = pat.matcher(line);
+				if(match.find()) {
+					Movie movie = new Movie(Integer.parseInt(match.group(1)), match.group(2),Integer.parseInt(match.group(3)));
+					for(String tag : match.group(4).split("\\|")) {
+						movie.addTag(tag);
+					}
+					this.movies.put(Integer.parseInt(match.group(1)),movie);
+				}
+				}	
+			}
+		} 
+		  catch (FileNotFoundException e) {
+			e.printStackTrace();
+		}
+		  catch (IOException e) {
+			e.printStackTrace();
+		}
+		return movies;
+	}
+
+	@Override
+	public void loadRating(String ratingFilename) {
+
+		// YOUR CODE GOES HERE
+		String pattern = "^([0-9]+),([0-9]+),([0-9.]+),([0-9]+)";
+		try {
+			BufferedReader read = new BufferedReader(new FileReader(ratingFilename));
+			String line = read.readLine();
+			Pattern pat = Pattern.compile(pattern);
+			while(line != null) {
+				line = read.readLine();
+				if(line != null) {
+				Matcher match = pat.matcher(line);
+					if(match.find()) {
+						User id = new User(Integer.parseInt(match.group(1)));
+						movies.get(Integer.parseInt(match.group(2))).addRating(id,movies.get(Integer.parseInt(match.group(2))),Double.parseDouble(match.group(3)),Long.parseLong(match.group(4)));
+						movies.get((Integer.parseInt(match.group(2)))).calMeanRating();
+					}
+				}
+			}
+		} catch (FileNotFoundException e) {
+			e.printStackTrace();
+		}
+		  catch (IOException e) {
+
+			e.printStackTrace();  
+		}
+	}
+
+	@Override
+	public void loadData(String movieFilename, String ratingFilename) {
+	
+		// YOUR CODE GOES HERE
+		loadMovies(movieFilename);
+		loadRating(ratingFilename);
+	}
+
+	@Override
+	public Map<Integer, Movie> getAllMovies() {
+
+		// YOUR CODE GOES HERE
+		if(movies.size() == 0) {
+			return null;
+		}
+		return movies;
+	}
+
+	@Override
+	public List<Movie> searchByTitle(String title, boolean exactMatch) {
+
+		// YOUR CODE GOES HERE
+		List<Movie> stitle  = new ArrayList<Movie>();
+		if(exactMatch) {
+			for(Integer i : this.movies.keySet()) {
+				System.out.println(movies.get(i).getTitle().toLowerCase()+" ' "+title.toLowerCase());
+				if(movies.get(i).getTitle().toLowerCase().equals(title.toLowerCase())) {
+					stitle.add(movies.get(i));
+				}
+			}
+		}
+		else {
+			System.out.println("false");
+			for(Integer i : this.movies.keySet()) {
+				if(movies.get(i).getTitle().toLowerCase().contains(title.toLowerCase())) {
+					stitle.add(movies.get(i));
+				}
+			}
+		}
+		return stitle;
+	}
+
+	@Override
+	public List<Movie> searchByTag(String tag) {
+
+		// YOUR CODE GOES HERE
+		List<Movie> s_tag = new ArrayList<Movie>();
+		for(Integer i : movies.keySet()) {
+			if(movies.get(i).getTags().contains(tag)) {
+				s_tag.add(movies.get(i));
+			}
+		}
+		return s_tag;
+	}
+
+	@Override
+	public List<Movie>searchByYear(int year) {
+
+		// YOUR CODE GOES HERE
+		List<Movie> s_year = new ArrayList<Movie>();
+		for(Integer i : movies.keySet()) {
+			if(movies.get(i).getYear() == year) {
+				s_year.add(movies.get(i));
+			}
+		}
+		return s_year;
+	}
+
+	@Override
+	public List<Movie> advanceSearch(String title, String tag, int year) {
+
+		// YOUR CODE GOES HERE
+		List<Movie> ad_search = new ArrayList<Movie>();
+		if(title == null) {
+			for(Integer i : movies.keySet()) {
+				if(movies.get(i).getTags().contains(tag)&&movies.get(i).getYear() == year) {
+					ad_search.add(movies.get(i));
+				}
+			}
+		}
+		return ad_search;
+	}
+
+	@Override
+	public List<Movie> sortByTitle(List<Movie> unsortedMovies, boolean asc) {
+
+		// YOUR CODE GOES HERE
+		
+		return null;
+	}
+
+	@Override
+	public List<Movie> sortByRating(List<Movie> unsortedMovies, boolean asc) {
+
+		// YOUR CODE GOES HERE
+		
+		return null;
+	}
+
+}

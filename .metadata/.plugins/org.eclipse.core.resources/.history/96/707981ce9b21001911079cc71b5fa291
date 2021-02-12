@@ -1,0 +1,26 @@
+
+public class Grade {
+	public int score;
+	public char[] a= {'A','B'};
+	public static int max;
+	public static int min;
+	Grade(int score){
+		this.score = score;
+	}
+	public void calculate () {
+		if() {
+			
+		}
+	}
+	public void avg() {
+		int i;
+		for(i=this.score;i!=this.score/10;i++) {
+			this.max = this.score;
+		}
+		System.out.println(max);
+	}
+	public static void main(String[] args) {
+		Grade one = new Grade(40);
+		one.avg();
+	}
+}

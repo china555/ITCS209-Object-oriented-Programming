@@ -1,0 +1,9 @@
+
+public class FreeMember extends Member {
+
+	FreeMember(String email, String password) {
+		super(email, password);
+		// TODO Auto-generated constructor stub
+	}
+
+}

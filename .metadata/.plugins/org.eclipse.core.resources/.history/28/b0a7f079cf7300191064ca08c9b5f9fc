@@ -1,0 +1,44 @@
+import java.io.File;
+import java.io.FileNotFoundException;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Scanner;
+
+public class sort 
+{
+	public static void main(String[] args)
+	{
+		String file_name = "unsorted.txt";
+		try {
+			readText(file_name);
+		} catch (FileNotFoundException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+	}
+	
+	public static List<String> readText(String file_name) throws FileNotFoundException
+	{
+		List<String> x = new ArrayList<String>();
+		File file = new File(file_name);
+		Scanner reader = null;
+		reader = new Scanner(file_name);
+		String word = null;
+		while(reader.hasNext())
+		{
+			word = reader.next();
+			x.add(reader.next());			
+		}
+		return x;
+	}
+	
+	public static void printText()
+	{
+		
+	}
+	
+	public static void sortText()
+	{
+		
+	}
+}

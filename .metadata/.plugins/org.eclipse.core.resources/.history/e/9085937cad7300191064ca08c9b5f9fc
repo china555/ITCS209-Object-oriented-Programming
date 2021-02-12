@@ -1,0 +1,49 @@
+import java.io.File;
+import java.io.IOException;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
+
+import org.apache.commons.io.FileUtils;
+
+public class SimpleMovieDatabase {
+	public Map<Integer, Movie> movies = null;
+	
+	public void importMovies(String movieFilename) 
+	{	//YOUR CODE GOES HERE
+		movies = new HashMap<Integer, Movie>();
+		File file = new File(movieFilename);
+		
+		try 
+		{
+			List<String> lines = FileUtils.readLines(file);
+	 		String pattern =  "([0-9]+),(.+),(.+)";
+			Pattern tan = Pattern.compile(pattern);
+			
+			for(String line : lines)
+			{
+				//System.out.println("a");
+				Matcher match = tan.matcher(line);
+				if(match.find());
+				{
+					System.out.println(match.group(1)+match.group(2)+match.group(3));
+					//System.out.println("b");
+					Movie movie = new Movie(Integer.parseInt(match.group(1)),match.group(2));
+					for(String tags : match.group(3).split("\\|"))
+					{
+						movie.tags.add(tags);
+						
+					}
+					movies.put(Integer.parseInt(match.group(1)),movie);
+					
+					
+				}
+			}
+		} catch (IOException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+	}
+}

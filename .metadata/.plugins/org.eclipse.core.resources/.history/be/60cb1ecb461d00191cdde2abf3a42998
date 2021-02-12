@@ -1,0 +1,9 @@
+
+public class AirQualityDataStore {
+	public static void main(String[] args) {
+		AirQualityProfile Delhi = new AirQualityProfile("2019-01-20 09:30", "Delhi",420,380,29,"Few cloud");
+		AirQualityProfile Shanghai = new AirQualityProfile("2019-01-20", "Shanghai", 184, 119,9,"Sunny");
+		AirQualityProfile.printAirQualityInfo(Delhi);
+		AirQualityProfile.printAirQualityInfo(Shanghai);
+	}
+}

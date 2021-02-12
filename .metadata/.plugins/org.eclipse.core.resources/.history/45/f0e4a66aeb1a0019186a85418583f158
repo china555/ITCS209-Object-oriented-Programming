@@ -1,0 +1,12 @@
+package nongnam;
+public class one
+{
+	public int a = 5;
+	public one(int a) {
+		this.a = a;
+	}
+//	public static void main(String[] args)
+//	{
+//		System.out.println("This is me NATTAWIPA.");
+//	}
+}

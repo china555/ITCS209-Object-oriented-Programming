@@ -1,0 +1,23 @@
+import java.io.File;
+import java.io.FileInputStream;
+import java.io.FileOutputStream;
+import java.io.IOException;
+import java.io.PrintWriter;
+
+public class test {
+
+	public static void main(String[] args) {
+		// TODO Auto-generated method stub
+		File file = new File("testnam.txt");
+		try {
+		//Scanner sc = new Scanner(file);
+			PrintWriter output = new PrintWriter(file);
+			output.println("LUV Naam");
+			output.close();
+		}
+		catch (IOException ex) {
+			System.out.println("ERROR "+ex);
+		}
+	}
+
+}
